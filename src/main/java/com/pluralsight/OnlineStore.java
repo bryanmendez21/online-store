@@ -1,11 +1,16 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 
 public class OnlineStore {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Scanner userInput = new Scanner(System.in);
+        BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/products.csv"));
 
+        boolean running = true;
         String goBack;
 
         do{
@@ -19,14 +24,21 @@ public class OnlineStore {
 
             switch (userOption){
                 case 1 -> {
+
+                    System.out.println(bufReader);
                     System.out.println("All Products");
+                    break;
                 }
                 case 2 ->{
                     System.out.println("Cart");
+                    break;
                 }
                 case 0 ->{
-                    break;
-
+                    running = false;
+                    continue;
+                }
+                default -> {
+                    System.out.println("Invalid Choice");
                 }
             }
 
@@ -34,8 +46,12 @@ public class OnlineStore {
             System.out.print("Would you want to go back (yes/no): ");
             goBack = userInput.nextLine();
 
+            if (goBack.equalsIgnoreCase("no")){
+                running = false;
+            }
+
         }
-        while (goBack.equalsIgnoreCase("yes"));
+        while (running);
 
         System.out.println("Good Bye");
         userInput.close();
