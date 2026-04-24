@@ -4,18 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class OnlineStore {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner userInput = new Scanner(System.in);
 
-
         // For the do while loop
         boolean running = true;
         String goBack;
-
 
         do{
             System.out.println("----------Welcome to The Store----------");
@@ -37,10 +36,24 @@ public class OnlineStore {
                     userInput.nextLine();
 
                     switch (userOptionDisplay){
-                        case 1 -> AllProducts();
+                        case 1 ->{
+                            Product.AllProducts();
+                            System.out.print("Add Product to cart type SKU:");
+                            String addBySku = userInput.nextLine();
+
+                            break;
+                        }
                         case 2 ->{
-                            System.out.print("what product are you looking for: ");
+                            System.out.print("what product or category are you looking for: ");
                             String productSearch = userInput.nextLine();
+
+
+
+                            System.out.println("WILL DISPLAY PRODUCT OR ALL IN CATEGORY");
+                            System.out.print("Add Product to cart type SKU:");
+                            String addBySku = userInput.nextLine();
+
+                            break;
 
                         }
                         case 3 -> {
@@ -81,23 +94,34 @@ public class OnlineStore {
         userInput.close();
 
     }
-
-    // Methods
-    public static void AllProducts() {
+    // Method
+    public static HashMap<String, Product> productSearched (){
+        HashMap<String, Product> products = new HashMap<>();
         try {
             BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/products.csv"));
-            // For the file reader
-            String allPro;
 
-            System.out.println("Display all products");
-            while ((allPro = bufReader.readLine()) != null) {
-                System.out.println(allPro);
+            String itemsInProduct; // For the file reader
+            bufReader.readLine(); // skips first line
+            while ((itemsInProduct = bufReader.readLine()) != null) {
+                String [] splitProducts = itemsInProduct.split(Pattern.quote("|"));
+
+                // parse items
+                String sku = splitProducts[0];
+                String productName = splitProducts[1];
+                double price = Double.parseDouble(splitProducts[2]);
+                String department = splitProducts[3];
+
+                Product product = new Product(sku, productName, price,department);
+                products.put(sku,product);
             }
-            bufReader.close();
 
-        } catch (IOException e) {
-            e.getStackTrace();
+            bufReader.close();
         }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return products;
+
     }
 
 }

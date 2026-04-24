@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Product {
     // Attributes
     private String sku;
@@ -49,5 +53,25 @@ public class Product {
 
     public void setCategory(String department) {
         this.department = department;
+    }
+
+    // Methods
+    public static void AllProducts() {
+
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/products.csv"));
+            // For the file reader
+
+            String allPro;
+            System.out.println("Display all products");
+            while ((allPro = bufReader.readLine()) != null) {
+                System.out.println(allPro);
+            }
+
+            bufReader.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
