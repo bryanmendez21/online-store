@@ -38,20 +38,28 @@ public class OnlineStore {
                     switch (userOptionDisplay){
                         case 1 ->{
                             Product.AllProducts();
-                            System.out.print("Add Product to cart type SKU:");
+                            System.out.print("Add Product to cart type SKU or type back to return to main menu: ");
                             String addBySku = userInput.nextLine();
+                            if(addBySku.equalsIgnoreCase("back")){
+                                continue;
+                            }
 
                             break;
                         }
                         case 2 ->{
+                            HashMap<String, Product> products = productSearched();
+                            System.out.println("---Category names---");
+                            System.out.println("Audio Video\nComputers\nGames\nElectronics");
                             System.out.print("what product or category are you looking for: ");
+
                             String productSearch = userInput.nextLine();
+                            for(Product p : products.values()) // loops through products
+                                if (p.getProductName().equalsIgnoreCase(productSearch) || p.getDepartment().equalsIgnoreCase(productSearch)){
+                                    System.out.println(p.getSku() + p.getProductName());
+                                }
 
-
-
-                            System.out.println("WILL DISPLAY PRODUCT OR ALL IN CATEGORY");
-                            System.out.print("Add Product to cart type SKU:");
-                            String addBySku = userInput.nextLine();
+                            //System.out.print("Add Product to cart type SKU:");
+                            //String addBySku = userInput.nextLine();
 
                             break;
 
