@@ -1,14 +1,13 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+
 public class OnlineStore {
+    static HashMap<String, Product> cart = new HashMap<>();
     public static void main(String[] args) throws FileNotFoundException {
         Scanner userInput = new Scanner(System.in);
 
@@ -55,11 +54,19 @@ public class OnlineStore {
                             String productSearch = userInput.nextLine();
                             for(Product p : products.values()) // loops through products
                                 if (p.getProductName().equalsIgnoreCase(productSearch) || p.getDepartment().equalsIgnoreCase(productSearch)){
-                                    System.out.println(p.getSku() + p.getProductName());
-                                }
+                                    System.out.println(p.getSku() + " | " + p.getProductName());
 
-                            //System.out.print("Add Product to cart type SKU:");
-                            //String addBySku = userInput.nextLine();
+                                    System.out.print("Add Product to cart type SKU:");
+                                    String addBySku = userInput.nextLine();
+                                    if (products.containsValue(addBySku)){
+                                        Product selected = products.get(addBySku);
+                                        cart.put(addBySku,selected);
+                                    }
+                                    else{
+                                        System.out.println("Product Not Found");
+                                    }
+
+                                }
 
                             break;
 
@@ -102,6 +109,7 @@ public class OnlineStore {
         userInput.close();
 
     }
+
     // Method
     public static HashMap<String, Product> productSearched (){
         HashMap<String, Product> products = new HashMap<>();
@@ -129,7 +137,7 @@ public class OnlineStore {
             e.printStackTrace();
         }
         return products;
-
     }
+
 
 }
